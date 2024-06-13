@@ -1,0 +1,15 @@
+name: CI workflow trigger
+on:
+  workflow_dispatch:
+#  pull_request:
+    branches:
+      - main
+    types: [opened, synchronize]  # Triggers on PR open and commits to PR
+jobs:
+  ci:
+    uses: wwalmnes-org/reusable-workflow-prototype/.github/workflows/ci-workflow.yml@main
+    with:
+      run-translations: true # Temp. argument to trigger 'run translation' step of reusable workflow
+      pack: false # # Temp. argument to trigger 'pack' step of reusable workflow
+
+

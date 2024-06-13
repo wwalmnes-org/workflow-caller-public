@@ -1,0 +1,39 @@
+name: CI workflow trigger
+on:
+  workflow_dispatch:
+  pull_request:
+    branches:
+      - main
+    types: [opened, synchronize]  # Triggers on PR open and commits to PR
+jobs:
+  ci:
+    uses: wwalmnes-org/reusable-workflow-prototype/.github/workflows/ci-workflow.yml@main
+    with:
+      run-translations: true # Temp. argument to trigger 'run translation' step of reusable workflow
+      #pack: true # # Temp. argument to trigger 'pack' step of reusable workflow
+      shallFail: false
+  comment:
+    #needs: ci
+    if: failure()
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+      repository-projects: write
+      id-token: write
+    steps:
+      - uses: actions/github-script@v6
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: 'hold on bucko, fix the pr'
+            })
+  on-failure:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'failure' }}
+    steps:
+      - name: Report error
+        run: echo "there was a failure"
