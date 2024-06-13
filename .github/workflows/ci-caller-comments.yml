@@ -11,7 +11,7 @@ jobs:
     with:
       run-translations: true # Temp. argument to trigger 'run translation' step of reusable workflow
       pack: true # # Temp. argument to trigger 'pack' step of reusable workflow
-      shallFail: false
+      shallFail: true
   comment:
     #needs: ci
     if: failure()
