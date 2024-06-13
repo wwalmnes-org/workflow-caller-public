@@ -13,7 +13,7 @@ jobs:
       pack: true # # Temp. argument to trigger 'pack' step of reusable workflow
       shallFail: true
   comment:
-    #needs: ci
+    needs: ci
     if: failure()
     runs-on: ubuntu-latest
     permissions:
